@@ -1,0 +1,19 @@
+# python caching
+__pycache__/
+
+# build related
+dist/
+
+# common virtual environment folders
+venv/
+.env/
+env/
+
+# IDE configs
+.idea/
+.vscode/
+
+# files that are created but should not be versioned
+*.svg
+*.pdf
+*.csv
