@@ -5,7 +5,14 @@ import numpy as np
 
 
 class Objective(ABC):
+    """Abstract base class for optimization objectives.
+    
+    This class defines the interface for objective functions used in optimization.
+    Subclasses must implement methods for computing function values, gradients,
+    and other properties needed for optimization algorithms.
 
+    n_dim: the dimensionality of the mapping input
+    """
     @abstractmethod
     def __init__(self, n_dim: int):
         self._n_dim = n_dim
@@ -59,10 +66,14 @@ class Objective(ABC):
 
 
 class StronglyConvex(Objective):
-    """f(x) = 0.5 * <bending * x | x>
-       implying that the gradient is a linear mapping grad f(x) = bending * x
-       bending: numpy ndarray element, describing a matrix of dim x dim that
-                shapes the bowl
+    """Strongly convex quadratic objective function.
+    
+    Implements f(x) = 0.5 * <bending * x | x> with gradient ∇f(x) = bending * x.
+    This creates a strongly convex bowl-shaped function parameterized by a bending matrix.
+
+    bending: numpy ndarray element, describing a matrix of (dim x dim) that
+             shapes the bowl. Should be positive definite. Will be symmetrized internally. 
+    name:    Optional name for this objective. Defaults to 'strongly convex'.
     """
     def __init__(self, bending: np.ndarray, name: str | None=None):
         assert (len(bending.shape) == 2)
@@ -102,15 +113,15 @@ class StronglyConvex(Objective):
 
 
 class StrictlyConvex(Objective):
-    """Multidimensional generalization of f(x) = x^4:
-        f(x) = sum_i a_i x_i^4, a_i > 0
-    The objective, a high dimensional bowl, is strictly convex, but not strongly convex,
-    and has its unique minimum at x = 0.
-
+    """Strictly convex objective with a sum of quartic terms.
+    
+    Implements f(x) = sum_i a_i x_i^4 where a_i > 0 as multidimensional generalization of f(x) = x^4
+    This creates a strictly convex (but not strongly convex) bowl with unique minimum at x = 0.
     Potential extension:
         If needed, a more general but still guaranteed-strictly-convex family could be
         f(x) = sum_i a_i (v_i^T x)^4,
         with a_i > 0 and the vectors v_i spanning the input space.
+
     coefficients: numpy ndarray element containing the a_i coefficients that scale each dimensions x^4 function
     """
     def __init__(self, coefficients: np.ndarray):
@@ -144,8 +155,12 @@ class StrictlyConvex(Objective):
 
 
 class Plateau(Objective):
-    """ Objective with a plateau and edges around that. The edges are given as
-        another objective object
+    """ Objective with a flat plateau surrounded by edges. 
+    
+    Combines a flat region (plateau) with edges defined by another objective function.
+    Points within the plateau have zero exceedance, while points outside are mapped
+    to the edge objective.
+
     plateau:        numpy ndarray matrix that contains two n_dim columns
                     one column for the lower bound and one for the upper bound of the
                     plateau at each dimension
@@ -190,12 +205,14 @@ class Plateau(Objective):
 
 
 class DoubleWell(Objective):
-    """Double-well potential with two minima, at x = ±origin_dist.
-    bending_1:   bending of the first value projection parabola
-    origin_dist: sets the placement of the minima. How far away are they from
-                 0.
-    slope:       the slope of a linear term which creates the different minima height
-    n_dim:       the dimensionality of the domain
+    """Double-well potential with two minima
+
+    well_bending:   bending of the first value projection parabola (must be > 0)
+    origin_dist: sets the placement of the minima. The higher the further away are they from 0 (must be > 0). 
+                 Be aware that the true minima locations are not exactly origin_dist away from 0. 
+    slope:       Slope of a linear term which creates the different minima height.
+    n_dim:       The dimensionality of the domain
+    
     The parameters need to be set in a non-trivial relation to each other to create two minima.
     This can be checked by the static method is_param_config_valid.
     """

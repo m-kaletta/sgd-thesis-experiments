@@ -9,6 +9,12 @@ from objective import Objective, StronglyConvex
 
 
 class SolveConfiguration:
+    """Encapsulates all settings for the solvers.
+    
+    step_sizes: numpy ndarray containing the step sizes for each iteration
+    x_init:     initial point for the optimization
+    name:       optional name for this configuration
+    """
     step_sizes: npt.NDArray[np.float64]
     x_init: npt.NDArray[np.float64]
     name: str
@@ -43,6 +49,10 @@ class SolveConfiguration:
 
 
 class Solver(ABC):
+    """Abstract base class for the solvers of optimization problems given as objectives.
+    
+    config: SolveConfiguration containing all relevant settings
+    """
     config: SolveConfiguration
 
     def __init__(self, config: SolveConfiguration):
@@ -106,7 +116,10 @@ class Solver(ABC):
 
 
 class TrueGradientDescent(Solver):
-
+    """Gradient descent using true gradients as provided by the objective objects.
+    
+    config: SolveConfiguration containing all relevant settings
+    """
     def __init__(self, config: SolveConfiguration):
         super().__init__(config)
 
@@ -118,7 +131,10 @@ class TrueGradientDescent(Solver):
 
 
 class GDAnalytical(Solver):
-
+    """Analytical solution for gradient descent optimization on strongly convex objectives.
+    
+    config: SolveConfiguration containing all relevant settings
+    """
     def __init__(self, config: SolveConfiguration):
         super().__init__(config)
 
@@ -148,7 +164,10 @@ class GDAnalytical(Solver):
 
 
 class StochasticSolver(Solver):
-
+    """Abstract base class for stochastic optimization solvers.
+    
+    config: SolveConfiguration containing all relevant settings
+    """
     def __init__(self, config: SolveConfiguration):
         super().__init__(config)
 
@@ -173,7 +192,12 @@ class StochasticSolver(Solver):
 
 
 class PseudoSGD(StochasticSolver):
-
+    """Abstract base class for stochastic optimization solvers.
+    
+    covar:              covariance matrix of the noise to be added to gradients
+    config:             SolveConfiguration containing all relevant settings
+    noise_is_spherical: whether the noise covariance is spherical (isotropic)
+    """
     def __init__(self, covar: np.ndarray, config: SolveConfiguration, noise_is_spherical=False):
         self.covar = covar
         self._noise_is_spherical = noise_is_spherical
@@ -212,7 +236,12 @@ class PseudoSGD(StochasticSolver):
 
 
 class StochasticGradientDescent(StochasticSolver):
-
+    """Abstract base class for stochastic optimization solvers.
+    
+    noise_scale: standard deviation of the noise of the linear regression problem that leads to the 
+                 SGD method implemented here (cf. comment at gradient_estimate)
+    config:      SolveConfiguration containing all relevant settings
+    """
     def __init__(self, noise_scale: float, config: SolveConfiguration):
         self.std = noise_scale
         super().__init__(config)
@@ -255,7 +284,13 @@ class StochasticGradientDescent(StochasticSolver):
 
 
 class ApproximateSGD(StochasticSolver):
-
+    """Approximate stochastic gradient descent using covariance approximation.
+    
+    noise_scale: standard deviation of the noise of the linear regression problem that leads to the 
+                 SGD method simulation which covariance is used for the gaussian noise here 
+                 (cf. also comment at gradient_estimate in StochasticGradientDescent)
+    config:      SolveConfiguration containing all relevant settings
+    """
     def __init__(self, noise_scale: float, config: SolveConfiguration):
         self.std = noise_scale
         super().__init__(config)
