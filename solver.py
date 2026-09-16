@@ -247,7 +247,7 @@ class StochasticGradientDescent(StochasticSolver):
         super().__init__(config)
 
     def __str__(self) -> str:
-        return 'exactly simulated SGD'
+        return 'simulated SGD'
 
     def label(self) -> str:
         return f'{self} $\\sigma={self.std:.2f}$'

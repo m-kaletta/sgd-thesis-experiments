@@ -47,7 +47,7 @@ def all_grad_errors(n_samples, noise_scales, x_values):
 def plot_hist():
     np.random.seed(42)
     df = all_grad_errors(n_samples=10000, noise_scales=[0.2, 0.8], x_values=[0.0, 0.5, 1.0])
-    hue_order = ['exactly simulated SGD', 'approximate SGD', 'pseudo SGD']
+    hue_order = ['simulated SGD', 'approximate SGD', 'pseudo SGD']
     plt.rcParams.update({'font.size': 15})
     grid = sns.displot(df, x='gradient error', col='w', row=r'$\sigma$', hue='solver', hue_order=hue_order,
                        kind='hist', stat='density', edgecolor=None, height=3, aspect=1.3)

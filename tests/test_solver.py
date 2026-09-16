@@ -211,13 +211,13 @@ class TestStochasticGradientDescent(unittest.TestCase):
             self.assertFalse(self.solver.is_applicable(objective))
 
     def test_string(self):
-        self.assertEqual(str(self.solver), 'exactly simulated SGD')
+        self.assertEqual(str(self.solver), 'simulated SGD')
 
     def test_label(self):
-        self.assertEqual(self.solver.label(), f'exactly simulated SGD $\\sigma=0.10$')
+        self.assertEqual(self.solver.label(), f'simulated SGD $\\sigma=0.10$')
 
     def test_description(self):
-        self.assertEqual(self.solver.description(), 'exactly simulated SGD $\\sigma=0.10$, config')
+        self.assertEqual(self.solver.description(), 'simulated SGD $\\sigma=0.10$, config')
 
     def test_solve_strongly_convex(self):
         solve_path = self.solver.solve(self.objective)
