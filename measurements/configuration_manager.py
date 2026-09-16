@@ -160,6 +160,10 @@ class ScenarioCollection:
         return name
 
     @property
+    def config(self):
+        return self.solvers[0][0].config
+
+    @property
     def n_dim(self):
         return self.objectives[0].n_dim  # no strong reason to use objs instead of solvers, just use any
 
@@ -220,7 +224,7 @@ class ScenarioCollection:
         solvers = SolverFactory.create(n_dim, objectives, sgd_std=[4.0, 1.0],
                                        x_init_scale=1.0, n_iter=200, step_size_start=0.4,
                                        factory_config=SolverFactoryConfig(exact=True))
-        return cls(name='Strongly Objectives, Exactly Simulated SGD', objectives=objectives, solvers=solvers)
+        return cls(name='Strongly Objectives, Simulated SGD', objectives=objectives, solvers=solvers)
 
     @classmethod
     def plot_solving_along_time_all_objectives(cls, n_dim: int=1):
