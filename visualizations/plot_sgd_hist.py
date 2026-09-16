@@ -51,7 +51,7 @@ def plot_hist():
     plt.rcParams.update({'font.size': 15})
     grid = sns.displot(df, x='gradient error', col='w', row=r'$\sigma$', hue='solver', hue_order=hue_order,
                        kind='hist', stat='density', edgecolor=None, height=3, aspect=1.3)
-    grid.set(xlim=(-4.0, 4.0), ylim=(0.0, 0.2))
+    grid.set(xlim=(-4.0, 4.0), ylim=(0.0, 0.15))
     sns.move_legend(grid, loc='lower center', ncol=3, title=None, frameon=False, bbox_to_anchor=(0.5, -0.025))
     plt.tight_layout()
     grid.figure.subplots_adjust(bottom=0.15)

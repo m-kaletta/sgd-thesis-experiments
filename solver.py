@@ -276,7 +276,7 @@ class StochasticGradientDescent(StochasticSolver):
     def covar(objective: Objective, x_val: np.ndarray, std: float) -> np.ndarray:
         assert isinstance(objective, StronglyConvex)
         transformed_val = objective.bending @ x_val
-        return np.outer(transformed_val, transformed_val) + objective.bending * (objective.value(x_val) + std ** 2)
+        return np.outer(transformed_val, transformed_val) + 2.0 * objective.bending * (objective.value(x_val) + std ** 2)
 
     def covariance(self, objective: Objective, x_val: np.ndarray) -> np.ndarray:
         assert isinstance(objective, StronglyConvex)
