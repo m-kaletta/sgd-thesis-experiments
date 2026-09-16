@@ -11,7 +11,7 @@ def plot_distance_to_min_hist(results_df, n_dim):
     stochastic_results_df = results_df[results_df['solver'].str.contains('SGD')]
     grid = sns.displot(stochastic_results_df, y='minimum distance', row='objective', col='solver', hue='solver',
                        kind='hist', kde=True, stat='density', bins=100, legend=False, height=3, aspect=1.3, edgecolor=None)
-    grid.set_axis_labels('Density', 'Minimum Distance')
+    grid.set_axis_labels('Density', 'distance to minimizer')
     grid.set_titles(row_template='{row_name}', col_template='{col_name}')
     plt.tight_layout()
     plt.savefig(f'eval_double_well_nd_{n_dim}_min_hist.pdf', dpi=600)

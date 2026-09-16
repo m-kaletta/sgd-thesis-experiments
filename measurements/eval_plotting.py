@@ -30,6 +30,7 @@ def plot_distance_to_min_strip(results_df, n_dim, fig_base_name, xlim=None, y='o
         patch.set_facecolor((r, g, b, alpha))
     _plot_distance_to_min_add_gd_marker(ax, results_df, y, hue, n_categories)
     ax.set_ylabel('')
+    ax.set_xlabel('distance to minimizer')
     if xlim is not None:
         ax.set_xlim(xlim)
     handles, labels = ax.get_legend_handles_labels()
