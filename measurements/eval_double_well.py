@@ -35,7 +35,8 @@ def inspect_final_well(scenarios: ScenarioCollection, n_monte_carlo=5000):
     evaluator = Evaluator(scenarios, name='double well', n_monte_carlo=n_monte_carlo)
     results_df = evaluator()
     results_df = df_preprocessing(results_df)
-    plot_distance_to_min_strip(results_df, scenarios.n_dim, 'eval_double_well')
+    # This is not needed since eval_solver includes those cases already
+    # plot_distance_to_min_strip(results_df, scenarios.n_dim, 'eval_double_well')
     plot_distance_to_min_hist(results_df, scenarios.n_dim)
     double_well_results = results_df[results_df['objective'] == 'double well']
     calculate_probabilities(double_well_results, scenarios.n_dim)
