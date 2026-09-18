@@ -186,7 +186,7 @@ class StochasticSolver(Solver):
         return np.trace(self.covariance(objective, x_val))
 
     def energy_matching_spherical_std(self, objective: Objective, x_val: np.ndarray) -> float:
-        var = self.variance(objective, x_val)
+        var = self.variance(objective, x_val) / self.n_dim
         sqrt_var = np.sqrt(var)
         return float(sqrt_var)
 

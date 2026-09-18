@@ -24,7 +24,7 @@ def compare_solver_strong_objectives_4d(scenarios: ScenarioCollection, n_monte_c
     results_df = evaluator()
     std_match_lookup = create_std_matching([1, 0.5, 0.25], scenarios)
     results_df = df_preprocessing(results_df, std_match_lookup)
-    for objective, xlim in zip(scenarios.objectives, [None, [0, 3.8], [0, 15.0]]):
+    for objective, xlim in zip(scenarios.objectives, [None, [0, 3.2], [0, 15.0]]):
         plot_df = results_df[results_df['objective'] == str(objective)]
         plot_distance_to_min_strip(plot_df, n_dim=scenarios.n_dim, fig_base_name=f'compare_solver_strong_{objective}',
                                    y='solver name', xlim=xlim)
